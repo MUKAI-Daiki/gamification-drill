@@ -18,7 +18,8 @@ description: >-
 - **ゼミ**: 向井ゼミ（子どもICTコース、RiTan Lab.）
 - **担当教員**: 向井大喜
 - **教員連絡先**: te_20251012@nua.ac.jp
-- **ゼミClassroom**: https://classroom.google.com/r/NzY1NTQzODkwNjQ0/
+- **ゼミClassroom**: [向井ゼミ Google Classroom](https://classroom.google.com/r/NzY1NTQzODkwNjQ0/)
+- **GitHubリポジトリ**: [gamification-drill](https://github.com/MUKAI-Daiki/gamification-drill)
 
 ## 研究開発テーマ・支援方針
 - **テーマ**: ゲーミフィケーションを活用したドリル教材・学習システムの開発研究
