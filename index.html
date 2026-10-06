@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#5c46e5">
+  <meta name="description" content="学習意欲の沸くゲーム性のある4択問題学習ドリルアプリ（向井ゼミ 卒業研究プロトタイプ）">
+  <title>クエストドリル - 楽しく学べるゲーミフィケーション学習アプリ</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- アプリヘッダー & プレイヤーステータス -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="app-brand">
+        <span class="brand-icon">⚔️</span>
+        <h1 class="app-title">クエストドリル</h1>
+      </div>
+      <div class="header-stats" id="header-stats-container">
+        <div class="user-badge">
+          <span id="header-user-name">ぼうけんしゃ</span>
+          <span class="level-tag" id="header-level-badge">Lv.1</span>
+        </div>
+        <div class="exp-bar-wrap">
+          <div class="exp-bar">
+            <div class="exp-fill" id="header-exp-fill"></div>
+          </div>
+          <span class="exp-text" id="header-exp-text">0 / 100 EXP</span>
+        </div>
+        <div class="coin-badge" title="獲得コイン">
+          <span>🪙</span>
+          <span id="header-coins">50</span>
+        </div>
+        <div class="streak-badge" title="連続学習日数">
+          <span>🔥</span>
+          <span id="header-streak">1日連続</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- メインナビゲーション -->
+    <nav class="nav-bar" aria-label="メインメニュー">
+      <div class="nav-inner">
+        <button class="nav-tab-btn active" id="tab-btn-gamification" data-tab="gamification">
+          <span>🎮</span> 冒険広場
+        </button>
+        <button class="nav-tab-btn" id="tab-btn-quiz" data-tab="quiz">
+          <span>📚</span> 学習モード
+        </button>
+        <button class="nav-tab-btn" id="tab-btn-history" data-tab="history">
+          <span>📊</span> 学習きろく
+        </button>
+        <button class="nav-tab-btn" id="tab-btn-admin" data-tab="admin">
+          <span>⚙️</span> 管理・教材設定
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- メインコンテンツ領域 -->
+  <main class="app-container">
+
+    <!-- 1. ゲーミフィケーションスペース（冒険広場） -->
+    <section id="view-gamification" class="view-section">
+      <!-- ヒーロー冒険バナー -->
+      <div class="hero-game-card">
+        <div class="hero-content">
+          <h2>きょうも冒険（学習）をはじめよう！</h2>
+          <p>4択クイズに正解して、経験値（EXP）やコインを集めよう！レベルアップすると新しい称号やバッジが解放されるよ。</p>
+          <button class="btn-primary" id="hero-start-drill-btn">
+            <span>⚔️</span> 今すぐクエストに挑む！
+          </button>
+        </div>
+        <div class="hero-avatar-area">
+          <div class="hero-avatar" id="hero-avatar-icon">🧙‍♂️</div>
+          <div class="avatar-title">見習い魔導士</div>
+        </div>
+      </div>
+
+      <!-- ステータス概要グリッド -->
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-icon">🏆</div>
+          <div>
+            <div class="stat-label">現在の冒険者レベル</div>
+            <div class="stat-value" id="game-stat-level">Lv.1</div>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">🪙</div>
+          <div>
+            <div class="stat-label">所持コイン</div>
+            <div class="stat-value" id="game-stat-coins">50</div>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">📝</div>
+          <div>
+            <div class="stat-label">これまでに解いた問題</div>
+            <div class="stat-value" id="game-stat-solved">0問</div>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon">🎯</div>
+          <div>
+            <div class="stat-label">通算正答率</div>
+            <div class="stat-value" id="game-stat-rate">0%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ゲーミフィケーション拡張予定エリア（スペース確保） -->
+      <div class="gamification-stage-box">
+        <h3 class="stage-title">🏰 ゲーミフィケーション・マイルーム（実装予定スペース）</h3>
+        <p class="stage-desc">
+          卒業研究の進捗に合わせて「アバター着せ替え」「モンスター討伐バトル」「学習すごろくマップ」などの独自ゲーム要素をここに実装できます。
+        </p>
+        <div class="stage-mock-slots">
+          <div class="mock-slot">
+            <span class="slot-icon">🛡️</span>
+            <span class="slot-name">そうび・マイルーム</span>
+            <span class="slot-hint">（コインでアイテム交換）</span>
+          </div>
+          <div class="mock-slot">
+            <span class="slot-icon">🐉</span>
+            <span class="slot-name">ボスバトル</span>
+            <span class="slot-hint">（正解でモンスターに攻撃）</span>
+          </div>
+          <div class="mock-slot">
+            <span class="slot-icon">🗺️</span>
+            <span class="slot-name">ワールドマップ</span>
+            <span class="slot-hint">（ステージ制マップ進行）</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- アチーブメント・バッジ一覧 -->
+      <div class="card">
+        <h3 class="section-heading"><span>🎖️</span> 獲得バッジコレクション</h3>
+        <div class="badges-grid" id="game-badges-grid">
+          <!-- JSで動的生成 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 学習モード（クイズ） -->
+    <section id="view-quiz" class="view-section hidden">
+      <!-- 2-A: クイズロビー（条件設定） -->
+      <div id="quiz-lobby-view" class="quiz-card">
+        <div class="lobby-header">
+          <h2>📚 クエスト（問題演習）の選択</h2>
+          <p>挑戦したい教科や出題数を決めてスタートしよう！</p>
+        </div>
+        <div class="lobby-form">
+          <div class="form-group">
+            <label for="quiz-category-select">教科・カテゴリ:</label>
+            <select id="quiz-category-select" class="form-select">
+              <option value="すべて">すべて</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="quiz-question-count-select">出題数:</label>
+            <select id="quiz-question-count-select" class="form-select">
+              <option value="5" selected>5問（サクッと挑戦）</option>
+              <option value="10">10問（しっかり特訓）</option>
+              <option value="0">登録されているすべての問題</option>
+            </select>
+          </div>
+          <div style="font-size: 0.88rem; color: var(--text-muted); text-align: center;">
+            現在登録されている問題: <strong id="quiz-available-count">5</strong> 問
+          </div>
+          <button class="btn-primary" id="quiz-start-btn" style="width: 100%; font-size: 1.15rem; padding: 14px;">
+            <span>🚀</span> クイズスタート！
+          </button>
+        </div>
+      </div>
+
+      <!-- 2-B: クイズプレイ中画面 -->
+      <div id="quiz-play-view" class="quiz-card hidden">
+        <div class="quiz-top-bar">
+          <div class="quiz-progress-info">
+            <span id="quiz-progress-label">第 1 問 / 全 5 問</span>
+            <span class="cat-pill" id="quiz-q-category">算数</span>
+          </div>
+          <div class="quiz-progress-track">
+            <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="question-box">
+          <div class="question-text" id="quiz-q-text">問題文がここに表示されます。</div>
+        </div>
+
+        <!-- 4択選択肢 -->
+        <div class="options-grid" id="quiz-options-container">
+          <!-- JSで4つのボタンを生成 -->
+        </div>
+
+        <!-- 正誤即時フィードバック -->
+        <div id="quiz-feedback-box" class="quiz-feedback-box hidden">
+          <div class="feedback-icon" id="quiz-feedback-icon">⭕</div>
+          <div>
+            <div class="feedback-title" id="quiz-feedback-title">せいかい！</div>
+            <div class="feedback-exp" id="quiz-feedback-explanation">解説テキスト</div>
+          </div>
+        </div>
+
+        <div class="quiz-action-bar">
+          <button class="btn-primary hidden" id="quiz-next-btn">次の問題へ ➔</button>
+        </div>
+      </div>
+
+      <!-- 2-C: クイズリザルト画面 -->
+      <div id="quiz-result-view" class="quiz-card hidden">
+        <div class="result-header">
+          <h2>🎉 クエストクリア！</h2>
+          <p>おつかれさま！今回の学習結果です。</p>
+        </div>
+
+        <div class="result-score-wrap">
+          <div class="result-score-big" id="result-score-big">5 / 5</div>
+          <div class="result-accuracy-pill" id="result-accuracy-pill">正答率 100%</div>
+        </div>
+
+        <!-- レベルアップ通知 -->
+        <div id="result-levelup-banner" class="levelup-banner hidden"></div>
+
+        <!-- 獲得報酬 -->
+        <div class="rewards-display">
+          <div class="reward-card">
+            <span>✨</span>
+            <span id="result-exp-reward">+100 EXP</span>
+          </div>
+          <div class="reward-card">
+            <span>🪙</span>
+            <span id="result-coin-reward">+50 コイン</span>
+          </div>
+        </div>
+
+        <!-- 間違えた問題と解説の復習リスト -->
+        <div class="card" style="border: 1px solid var(--border); box-shadow: none;">
+          <h3 class="section-heading"><span>📖</span> 今回の問題のふりかえり</h3>
+          <div class="review-list" id="result-review-list">
+            <!-- JSで動的生成 -->
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 14px; margin-top: 20px;">
+          <button class="btn-primary" id="quiz-restart-btn">
+            <span>🔄</span> もう一度挑戦する
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 学習きろく（履歴） -->
+    <section id="view-history" class="view-section hidden">
+      <div class="history-header">
+        <div>
+          <h2>📊 学習きろく（セッション履歴）</h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">これまでに挑戦したドリルごとの成績履歴です。</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="cat-pill" id="history-total-count">0回</span>
+          <button class="btn-danger" id="clear-history-btn" title="履歴を消去">履歴クリア</button>
+        </div>
+      </div>
+
+      <div id="history-empty-notice" class="empty-notice card">
+        <div class="empty-icon">📝</div>
+        <h3>まだ学習履歴がありません</h3>
+        <p>「学習モード」から問題を解くと、ここに結果が自動で記録されます！</p>
+      </div>
+
+      <div class="history-list" id="history-list-container">
+        <!-- JSで動的生成 -->
+      </div>
+    </section>
+
+    <!-- 4. 管理・教材設定（CSVインポート・アセット管理） -->
+    <section id="view-admin" class="view-section hidden">
+      <div class="admin-grid">
+        <!-- CSVインポートカード -->
+        <div class="card">
+          <h3 class="section-heading"><span>📥</span> CSVによる問題アセットのインポート</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">
+            Excelやスプレッドシート等で作成したCSVファイルから、一括で問題を取り込むことができます。
+          </p>
+
+          <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
+          <div class="csv-drop-zone" id="csv-drop-zone">
+            <div class="drop-icon">📁</div>
+            <div class="drop-text">ここにCSVファイルをドラッグ＆ドロップ</div>
+            <div class="drop-subtext">またはクリックしてファイルを選択（UTF-8形式）</div>
+          </div>
+
+          <div class="admin-actions-bar">
+            <button class="btn-secondary" id="download-sample-csv-btn">
+              <span>📄</span> テンプレートCSVをダウンロード
+            </button>
+          </div>
+
+          <div style="font-size: 0.82rem; background: var(--bg-surface); padding: 12px; border-radius: var(--radius-sm); color: #475569;">
+            <strong>CSV形式の仕様:</strong><br>
+            列ヘッダー: <code>id,category,question,option1,option2,option3,option4,answer,explanation</code><br>
+            ※<code>answer</code>には正解の選択肢番号（1〜4の半角数字）を指定してください。
+          </div>
+        </div>
+
+        <!-- 現在の問題一覧 -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 class="section-heading" style="margin-bottom: 0;">
+              <span>📋</span> 登録中の問題一覧 <span class="cat-pill" id="admin-question-count">0問</span>
+            </h3>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th class="col-num">#</th>
+                  <th class="col-cat">科目</th>
+                  <th class="col-q">問題文</th>
+                  <th class="col-opts">選択肢 (1〜4)</th>
+                  <th class="col-ans">正解</th>
+                  <th class="col-exp">解説</th>
+                  <th class="col-action">操作</th>
+                </tr>
+              </thead>
+              <tbody id="admin-question-table-body">
+                <!-- JSで動的生成 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 1問ずつの手動追加フォーム -->
+        <div class="card">
+          <h3 class="section-heading"><span>➕</span> 新しい問題の手動追加</h3>
+          <form id="add-question-form">
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 14px; margin-bottom: 12px;">
+              <div class="form-group">
+                <label for="q-input-category">科目・カテゴリ:</label>
+                <input type="text" id="q-input-category" class="form-input" placeholder="例: 算数" value="算数" required>
+              </div>
+              <div class="form-group">
+                <label for="q-input-text">問題文:</label>
+                <input type="text" id="q-input-text" class="form-input" placeholder="例: 9 × 9 の答えは？" required>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px;">
+              <div class="form-group">
+                <label for="q-input-opt1">選択肢 1:</label>
+                <input type="text" id="q-input-opt1" class="form-input" placeholder="選択肢1" required>
+              </div>
+              <div class="form-group">
+                <label for="q-input-opt2">選択肢 2:</label>
+                <input type="text" id="q-input-opt2" class="form-input" placeholder="選択肢2" required>
+              </div>
+              <div class="form-group">
+                <label for="q-input-opt3">選択肢 3:</label>
+                <input type="text" id="q-input-opt3" class="form-input" placeholder="選択肢3">
+              </div>
+              <div class="form-group">
+                <label for="q-input-opt4">選択肢 4:</label>
+                <input type="text" id="q-input-opt4" class="form-input" placeholder="選択肢4">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 14px; margin-bottom: 16px;">
+              <div class="form-group">
+                <label for="q-input-ans">正解 (番号):</label>
+                <select id="q-input-ans" class="form-select">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="q-input-exp">解説（任意）:</label>
+                <input type="text" id="q-input-exp" class="form-input" placeholder="正解のポイントや解説">
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+              <span>➕</span> この問題を追加する
+            </button>
+          </form>
+        </div>
+
+        <!-- バックアップとデータ管理 -->
+        <div class="card">
+          <h3 class="section-heading"><span>💾</span> データバックアップ & 復元</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 14px;">
+            DBを用いずブラウザのLocalStorageに保存しているため、端末の変更や万が一のデータクリアに備えてバックアップファイルを保存・復元できます。
+          </p>
+          <div class="maintenance-panel">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn-secondary" id="export-backup-btn">
+                <span>📤</span> バックアップ保存（JSON）
+              </button>
+              <label class="btn-secondary" style="cursor: pointer;">
+                <span>📥</span> バックアップから復元
+                <input type="file" id="import-backup-input" accept=".json" style="display: none;">
+              </label>
+            </div>
+            <button class="btn-danger" id="reset-defaults-btn">
+              <span>⚠️</span> 初期状態にリセット
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
